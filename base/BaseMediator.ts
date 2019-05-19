@@ -1,13 +1,12 @@
 import BaseCommand from "./BaseCommand";
 import { BaseView } from "./BaseView";
+import BaseModel from "./BaseModel";
 
 export default class BaseMediator {
 
     public static cmpt: {prototype: BaseView};
 
     public view: BaseView;
-
-    test: number = 999;
 
     public init(): void {
 
@@ -28,6 +27,10 @@ export default class BaseMediator {
     public sendCmd<T extends BaseCommand>(cmd: {prototype: T}, data: any): void {
         
     }
+    
+    public getModel<T extends BaseModel>(model: {prototype: T}): T {
 
+        return null;
+    }
 
 }

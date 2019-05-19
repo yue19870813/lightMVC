@@ -1,12 +1,14 @@
+import BaseModel from "./BaseModel";
 
-export default class BaseCommand {
+export default abstract class  BaseCommand {
 
-    public execute(): void {
+    public abstract execute(): void;
 
-    }
+    public abstract undo(): void;
 
-    public undo(): void {
+    public getModel<T extends BaseModel>(model: {prototype: T}): T {
 
+        return null;
     }
 
     public sendCmd(): void {

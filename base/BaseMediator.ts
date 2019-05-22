@@ -4,8 +4,6 @@ import BaseModel from "./BaseModel";
 
 export default class BaseMediator {
 
-    public static cmpt: {prototype: BaseView};
-
     public view: BaseView;
 
     public init(): void {

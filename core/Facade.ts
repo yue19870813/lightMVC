@@ -19,7 +19,7 @@ export class Facade {
     }
 
     public popView(): void {
-
+        console.log("===================== popView");
     }
 
     public registerCmd(): void {

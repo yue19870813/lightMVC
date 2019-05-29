@@ -1,5 +1,6 @@
 import { Controller } from "./Controller";
 import BaseMediator from "./base/BaseMediator";
+import BaseScene from "./base/BaseScene";
 
 export class Facade {
 
@@ -13,9 +14,9 @@ export class Facade {
         return this._instance;
     }
 
-    public runScene(scene: {new(): BaseMediator}, data:any = null): void {
+    public runScene(mediator: {new(): BaseMediator}, view: {new(): BaseScene}, data:any = null): void {
         console.log("-----------=========================");
-        Controller.getInstance().__runScene(scene);
+        Controller.getInstance().__runScene(mediator, view, data);
     }
 
     public popView(): void {

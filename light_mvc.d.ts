@@ -4,5 +4,14 @@ declare class mvc {
 }
 
 declare class Facade {
-	public popView();
+	public popView(): void;
+	public runScene(mediator: {new(): BaseMediator}, view: {new(): BaseScene}, data:any = null): void;
+}
+
+declare class BaseMediator {
+
+}
+
+declare class BaseScene {
+
 }

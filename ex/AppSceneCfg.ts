@@ -10,7 +10,7 @@ export class AppSceneCfg  {
         // let cls = eval("MainSceneMediator");
         // let tt = new cls();
         // tt.ttt(); http://10.232.34.248:13333/
-        mvc.facade.popView();
+
     }
 }
 

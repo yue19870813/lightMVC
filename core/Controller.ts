@@ -11,10 +11,7 @@ import BaseScene from "./base/BaseScene";
 export class Controller {
     // 实例
     private static _instance: Controller = new Controller();
-    // 上一个场景
-    private _lastScene: {prototype: BaseMediator};
-    // 当前场景
-    private _currScene: {prototype: BaseMediator};
+
     // 当前显示的view列表
     private _viewList: BaseView[];
 
@@ -36,20 +33,14 @@ export class Controller {
      * 运行场景
      * @param {{new(): BaseMediator}} mediator 场景mediator类型，类类型。
      * @param {{new(): BaseScene}} view 场景mediator类型，类类型。
-     * @param {Object} data 自定义的任意类型透传数据。
+     * @param {Object} data 自定义的任意类型透传数据。（可选）
      * @private
      */
     public __runScene(mediator: {new(): BaseMediator}, view: {new(): BaseScene}, data:any = null): void {
-        if (this._currScene) {
-            // 保存当前场景
-            this._lastScene = this._currScene;
-        }
-        // 重置当前场景
-        this._currScene = mediator;
         // 创建并绑定场景
         let sceneMediator: BaseMediator = new mediator();
         console.dir(sceneMediator);
-        sceneMediator.init();
+        sceneMediator.init(data);
 
         // 处理场景显示逻辑
         let scenePath: string = (<any>(view)).path();

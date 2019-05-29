@@ -13,9 +13,13 @@ export class Facade {
     public static getInstance(): Facade {
         return this._instance;
     }
-
+    /**
+     * 运行场景
+     * @param {{new(): BaseMediator}} mediator 场景mediator类型，类类型。
+     * @param {{new(): BaseScene}} view 场景mediator类型，类类型。
+     * @param {Object} data 自定义的任意类型透传数据。（可选）
+     */
     public runScene(mediator: {new(): BaseMediator}, view: {new(): BaseScene}, data:any = null): void {
-        console.log("-----------=========================");
         Controller.getInstance().__runScene(mediator, view, data);
     }
 

@@ -2,15 +2,21 @@ import BaseCommand from "./BaseCommand";
 import { BaseView } from "./BaseView";
 import BaseModel from "./BaseModel";
 
+/**
+ * 视图中介者基类
+ * @author Yue
+ */
 export default class BaseMediator {
-
+    /** 当前中介者持有的view视图 */
     public view: BaseView;
-
+    /** 当前视图的事件对象 */
+    private _event;
     /**
      * 初始化接口,此时视图还没有创建，如果想操作视图view请在viewDidAppear函数中进行。
+     * @param {Object} data 自定义的任意类型透传数据。（可选）
      * @override
      * */
-    public init(): void {
+    public init(data: any = null): void {
 
     }
 

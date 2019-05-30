@@ -51,6 +51,7 @@ export class Controller {
             canvasNode.name = "Canvas";
             canvasNode.addComponent(cc.Canvas);
             sceneMediator.view = canvasNode.addComponent(view);
+            sceneMediator.view.__init();
             ccs.addChild(canvasNode);
             cc.director.runSceneImmediate(ccs);
             sceneMediator.viewDidAppear();
@@ -59,6 +60,7 @@ export class Controller {
                 let canvas = cc.director.getScene().getChildByName('Canvas');
                 if (canvas) {
                     sceneMediator.view = canvas.addComponent(view);
+                    sceneMediator.view.__init();
                     sceneMediator.viewDidAppear();
                 } else {
                     console.log("场景中必须包含默认的Canvas节点！");

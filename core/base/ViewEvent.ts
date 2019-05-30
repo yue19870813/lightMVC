@@ -15,10 +15,10 @@ export default class ViewEvent{
     /**
      * 注册事件
      * @param {string} name 事件名称
-     * @param {(...args)=>void} cb 事件回调
+     * @param {(any)=>void} cb 事件回调
      * @param {BaseMediator} target 绑定事件的对象
      */
-    public on(name: string, cb: (...args)=>void, target: BaseMediator): void {
+    public on(name: string, cb: (body: any)=>void, target: BaseMediator): void {
         let event = new __ViewEvent(name, cb, target);
         for (let e of this._eventList) {
             if (e.equals(event)) {
@@ -32,13 +32,12 @@ export default class ViewEvent{
     /**
      * 派发事件
      * @param {string} name 事件名称
-     * @param {...} args 事件参数，动态参数列表
+     * @param {Object} body 事件参数，动态参数列表
      */
-    public emit(name: string, ...args): void {
+    public emit(name: string, body: any): void {
         for (let e of this._eventList) {
             if (e.name === name) {
-                console.log("事件[" + name + "]已存在！");
-                e.cb && e.cb.call(e.target, args);
+                e.cb && e.cb.call(e.target, body);
                 break;
             }
         }

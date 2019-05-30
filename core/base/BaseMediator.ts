@@ -9,8 +9,6 @@ import BaseModel from "./BaseModel";
 export default class BaseMediator {
     /** 当前中介者持有的view视图 */
     public view: BaseView;
-    /** 当前视图的事件对象 */
-    private _event;
     /**
      * 初始化接口,此时视图还没有创建，如果想操作视图view请在viewDidAppear函数中进行。
      * @param {Object} data 自定义的任意类型透传数据。（可选）
@@ -28,8 +26,14 @@ export default class BaseMediator {
 
     }
 
-    public bindEvent(event: string, data: any): void {
-
+    /**
+     * 绑定UI事件，接收view层派发的事件。
+     * @param {string} name 事件名称
+     * @param {(any)=>void} cb 事件回调
+     * @param {BaseMediator} target 回调绑定对象
+     */
+    public bindEvent(name: string, cb: (body: any)=>void, target: BaseMediator): void {
+        this.view.__bindEvent(name, cb, target);
     }
 
     public registerNoti(noti: string, cb: (data: any)=>void, target: any): void {

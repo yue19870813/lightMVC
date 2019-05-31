@@ -5,6 +5,10 @@ import BaseModel from "./BaseModel";
 /**
  * 视图中介者基类
  * @author Yue
+ * @description 生命周期
+ *      BaseMediator.init
+ *      BaseView.__init
+ *      BaseMediator.viewDidAppear
  */
 export default class BaseMediator {
     /** 当前中介者持有的view视图 */
@@ -14,7 +18,7 @@ export default class BaseMediator {
      * @param {Object} data 自定义的任意类型透传数据。（可选）
      * @override
      * */
-    public init(data: any = null): void {
+    public init(data?: any): void {
 
     }
 

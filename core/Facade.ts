@@ -67,6 +67,5 @@ export class Facade {
 (<any>(window)).mvc = {
     /** mvc全局控制类 */
     facade: Facade.getInstance(),
-    /** 打开view选项枚举 */
-    OPEN_VIEW_OPTION : OPEN_VIEW_OPTION,
+
 };

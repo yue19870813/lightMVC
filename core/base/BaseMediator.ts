@@ -1,6 +1,7 @@
 import BaseCommand from "./BaseCommand";
 import { BaseView } from "./BaseView";
 import BaseModel from "./BaseModel";
+import {Facade} from "../Facade";
 
 /**
  * 视图中介者基类
@@ -50,6 +51,17 @@ export default class BaseMediator {
 
     public sendCmd<T extends BaseCommand>(cmd: {prototype: T}, data: any): void {
         
+    }
+
+    /**
+     * todo:  will remove
+     * 打开view界面
+     * @param {{new(): BaseMediator}} mediator 界面mediator类型，类类型。
+     * @param {{new(): BaseView}} view view 场景mediator类型，类类型。
+     * @param {Object} data 自定义的任意类型透传数据。（可选）
+     */
+    public popView(mediator: {new(): BaseMediator}, view: {new(): BaseView}, data?: any): void {
+        Facade.getInstance().addLayer(mediator, view, data);
     }
     
     public getModel<T extends BaseModel>(model: {prototype: T}): T {

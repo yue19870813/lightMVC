@@ -120,7 +120,7 @@ export class ViewManager {
         viewNode.zIndex = zOrder;
         mediator.view = viewNode.addComponent(view);
         mediator.view.__init__();
-        cc.director.getScene().addChild(viewNode);
+        cc.director.getScene().getChildByName('Canvas').addChild(viewNode);
         mediator.viewDidAppear();
         // 根据不同打开类型，存储到不同队列中。
         if (option === OPEN_VIEW_OPTION.OVERLAY || option === OPEN_VIEW_OPTION.SINGLE) {
@@ -136,11 +136,14 @@ export class ViewManager {
      * @private
      */
     private openViewOptionHandler(option: OPEN_VIEW_OPTION): void {
-        // TODO
+        // 设置默认值
         if (!option) {
             option = OPEN_VIEW_OPTION.OVERLAY;
         }
-
+        // 根据不同操作做不同处理
+        if (option === OPEN_VIEW_OPTION.SINGLE) {
+            // TODO:暂时不提供这种关闭其他view的打开方式，可以通过BaseView.closeAllPopView()来实现。
+        }
     }
 
 

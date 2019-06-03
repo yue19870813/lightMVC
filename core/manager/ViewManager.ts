@@ -1,7 +1,7 @@
-import {BaseView} from "./base/BaseView";
-import BaseMediator from "./base/BaseMediator";
-import BaseScene from "./base/BaseScene";
-import {OPEN_VIEW_OPTION} from "./Constants";
+import {BaseView} from "../base/BaseView";
+import BaseMediator from "../base/BaseMediator";
+import BaseScene from "../base/BaseScene";
+import {OPEN_VIEW_OPTION} from "../Constants";
 import Canvas = cc.Canvas;
 
 /**
@@ -9,25 +9,28 @@ import Canvas = cc.Canvas;
  * @author ituuz
  * @description 负责控制和维护框架各个节点和结构间的跳转和关联。
  */
-export class Controller {
+export class ViewManager {
     // 实例
-    private static _instance: Controller = new Controller();
+    private static _instance: ViewManager = new ViewManager();
 
-    // 当前显示的view列表
-    private __viewList: BaseView[];
+    // 当前显示的pop view列表
+    private _popViewList: BaseMediator[];
+    // 当前显示的layer view列表
+    private _layerViewList: BaseMediator[];
 
     /**
      * @constructor
      * @private
      */
     private constructor () {
-        this.__viewList = [];
+        this._popViewList = [];
+        this._layerViewList = [];
     }
 
     /**
      * 单例获取类
      */
-    public static getInstance(): Controller {
+    public static getInstance(): ViewManager {
         return this._instance;
     }
 
@@ -76,8 +79,10 @@ export class Controller {
      * @param {{new(): BaseView}} view view 场景mediator类型，类类型。
      * @param {Object} data 自定义的任意类型透传数据。（可选）
      * @param {OPEN_VIEW_OPTION} option 打开ui的操作选项，枚举类型。
+     * @param {number} zOrder 层级。
      */
-    public __popView__(mediator: {new(): BaseMediator}, view: {new(): BaseView}, data?: any, option?: OPEN_VIEW_OPTION): void {
+    public __showView__(mediator: {new(): BaseMediator}, view: {new(): BaseView},
+                        data?: any, option?: OPEN_VIEW_OPTION, zOrder?: number): void {
         // 处理打开UI的其他操作
         this.openViewOptionHandler(option);
 
@@ -89,10 +94,7 @@ export class Controller {
         let viewPath: string = (<any>(view)).path();
         if (viewPath === "") {
             let viewNode = new cc.Node();
-            viewMediator.view = viewNode.addComponent(view);
-            viewMediator.view.__init__();
-            cc.director.getScene().addChild(viewNode);
-            viewMediator.viewDidAppear();
+            this.initViewMediator(viewMediator, viewNode, view);
         } else {
             cc.loader.loadRes(viewPath, cc.Prefab, (err, prefab)=>{
                 if (err) {
@@ -100,11 +102,31 @@ export class Controller {
                     return;
                 }
                 let viewNode = cc.instantiate(prefab);
-                viewMediator.view = viewNode.addComponent(view);
-                viewMediator.view.__init__();
-                cc.director.getScene().addChild(viewNode);
-                viewMediator.viewDidAppear();
+                this.initViewMediator(viewMediator, viewNode, view);
             });
+        }
+    }
+
+    /**
+     * 初始化ViewMediator
+     * @param {BaseMediator} mediator ViewMediator
+     * @param {cc.Node} viewNode view显示节点
+     * @param {{new(): BaseView}} view view显示组件类
+     * @param {OPEN_VIEW_OPTION} option 打开选项
+     * @param {number} zOrder 层级排序
+     */
+    private initViewMediator(mediator: BaseMediator, viewNode: cc.Node, view: {new(): BaseView},
+                             option?: OPEN_VIEW_OPTION, zOrder?: number): void {
+        viewNode.zIndex = zOrder;
+        mediator.view = viewNode.addComponent(view);
+        mediator.view.__init__();
+        cc.director.getScene().addChild(viewNode);
+        mediator.viewDidAppear();
+        // 根据不同打开类型，存储到不同队列中。
+        if (option === OPEN_VIEW_OPTION.OVERLAY || option === OPEN_VIEW_OPTION.SINGLE) {
+            this._popViewList.push(mediator);
+        } else if (option === OPEN_VIEW_OPTION.LAYER) {
+            this._layerViewList.push(mediator);
         }
     }
 
@@ -120,6 +142,8 @@ export class Controller {
         }
 
     }
+
+
 }
 
 /**

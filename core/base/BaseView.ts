@@ -51,6 +51,22 @@ export class BaseView extends cc.Component {
         this.__event__.on(name, cb, target);
     }
 
+    public closeView(): void {
+
+    }
+
+    public closeAllPopView(): void {
+
+    }
+
+    /**
+     * 但界面被关闭时会被调用，子类可以重写该方法。
+     * @override
+     */
+    public onClose(): void {
+
+    }
+
     /**
      * 子类覆盖，返回UI的prefab路径
      * @return {string}

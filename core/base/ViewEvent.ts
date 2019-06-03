@@ -5,7 +5,7 @@
 export default class ViewEvent{
 
     /** 事件列表 */
-    private _eventList: __ViewEvent[];
+    private _eventList: __ViewEvent__[];
 
     public constructor() {
         // 初始化事件列表
@@ -19,7 +19,7 @@ export default class ViewEvent{
      * @param {BaseMediator} target 绑定事件的对象
      */
     public on(name: string, cb: (body: any)=>void, target: BaseMediator): void {
-        let event = new __ViewEvent(name, cb, target);
+        let event = new __ViewEvent__(name, cb, target);
         for (let e of this._eventList) {
             if (e.equals(event)) {
                 console.log("事件[" + name + "]已存在！");
@@ -65,7 +65,7 @@ export default class ViewEvent{
  * 事件对象结构，用于内部使用。
  * @private
  */
-class __ViewEvent {
+class __ViewEvent__ {
     /** 事件名称 */
     public name: string;
     /** 事件回调 */
@@ -86,10 +86,10 @@ class __ViewEvent {
 
     /**
      * 判断两个对象是否相等
-     * @param {__ViewEvent} event 目标事件对象
+     * @param {__ViewEvent__} event 目标事件对象
      * @return {boolean} 是否相等
      */
-    public equals(event: __ViewEvent): boolean {
+    public equals(event: __ViewEvent__): boolean {
         return this.name === event.name;
     }
 }

@@ -1,4 +1,4 @@
-import {Controller} from "./Controller";
+import {ViewManager} from "./manager/ViewManager";
 import BaseMediator from "./base/BaseMediator";
 import BaseScene from "./base/BaseScene";
 import {BaseView} from "./base/BaseView";
@@ -22,7 +22,7 @@ export class Facade {
      * @param {Object} data 自定义的任意类型透传数据。（可选）
      */
     public runScene(mediator: {new(): BaseMediator}, view: {new(): BaseScene}, data?: any): void {
-        Controller.getInstance().__runScene__(mediator, view, data);
+        ViewManager.getInstance().__runScene__(mediator, view, data);
     }
 
     /**
@@ -30,10 +30,20 @@ export class Facade {
      * @param {{new(): BaseMediator}} mediator 界面mediator类型，类类型。
      * @param {{new(): BaseView}} view view 场景mediator类型，类类型。
      * @param {Object} data 自定义的任意类型透传数据。（可选）
-     * @param {OPEN_VIEW_OPTION} option 打开ui的操作选项，枚举类型。
      */
-    public popView(mediator: {new(): BaseMediator}, view: {new(): BaseView}, data?: any, option?: OPEN_VIEW_OPTION): void {
-        Controller.getInstance().__popView__(mediator, view, data, option);
+    public popView(mediator: {new(): BaseMediator}, view: {new(): BaseView}, data?: any): void {
+        ViewManager.getInstance().__showView__(mediator, view, data, OPEN_VIEW_OPTION.OVERLAY, 0);
+    }
+
+    /**
+     * 创建view层
+     * @param {{new(): BaseMediator}} mediator 界面mediator类型，类类型。
+     * @param {{new(): BaseView}} view view 场景mediator类型，类类型。
+     * @param {number} zOrder ui层级
+     * @param {Object} data 自定义的任意类型透传数据。（可选）
+     */
+    public addLayer(mediator: {new(): BaseMediator}, view: {new(): BaseView}, zOrder?: number, data?: any): void {
+        ViewManager.getInstance().__showView__(mediator, view, data, OPEN_VIEW_OPTION.LAYER, zOrder);
     }
 
     public registerCmd(): void {

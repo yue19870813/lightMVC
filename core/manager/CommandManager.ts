@@ -31,15 +31,20 @@ export default class CommandManager {
     /**
      * 执行命令
      * @param {{new (): BaseCommand}} command 命令对象
+     * @param {Object} body 命令参数
      */
-    public excuteCommand(command: {new (): BaseCommand}): void {
+    public executeCommand(command: {new (): BaseCommand}, body?: any): void {
         if (cc.js.isChildClassOf(command, SimpleCommand)) {
             let cmd: SimpleCommand = new command() as SimpleCommand;
-            cmd.execute();
+            cmd.execute(body);
         } else if (cc.js.isChildClassOf(command, SyncMacroCommand)) {
-
+            // TODO: 同步按顺序执行的命令组合宏
         } else if (cc.js.isChildClassOf(command, AsyncMacroCommand)) {
-
+            let cmd: AsyncMacroCommand = new command() as AsyncMacroCommand;
+            // 初始化宏
+            cmd["initialize"]();
+            // 执行
+            cmd["asyncExecute"]();
         } else {
             console.log(command.prototype + " 不是可执行的命令！");
         }
@@ -48,15 +53,20 @@ export default class CommandManager {
     /**
      * 撤销命令
      * @param {{new (): BaseCommand}} command 命令对象
+     * @param {Object} body 命令参数
      */
-    public undoCommand(command: {new (): BaseCommand}): void {
+    public undoCommand(command: {new (): BaseCommand}, body?: any): void {
         if (cc.js.isChildClassOf(command, SimpleCommand)) {
             let cmd: SimpleCommand = new command() as SimpleCommand;
-            cmd.undo();
+            cmd.undo(body);
         } else if (cc.js.isChildClassOf(command, SyncMacroCommand)) {
-
+            // TODO: 同步按顺序撤销的命令组合宏
         } else if (cc.js.isChildClassOf(command, AsyncMacroCommand)) {
-
+            let cmd: AsyncMacroCommand = new command() as AsyncMacroCommand;
+            // 初始化宏
+            cmd["initialize"]();
+            // 执行
+            cmd["asyncUndo"]();
         } else {
             console.log(command.prototype + " 不是可执行的命令！");
         }

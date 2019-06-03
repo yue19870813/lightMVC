@@ -1,25 +1,7 @@
-import BaseModel from "./BaseModel";
+/**
+ * 命令基类
+ */
 
-export default abstract class  BaseCommand {
+export default class BaseCommand {
 
-    public abstract execute(): void;
-
-    public abstract undo(): void;
-
-    public getModel<T extends BaseModel>(model: {prototype: T}): T {
-
-        return null;
-    }
-
-    public sendCmd(): void {
-
-    }
-
-    public undoCmd(): void {
-        
-    }
-
-    public sendNoti(): void {
-
-    }
 }

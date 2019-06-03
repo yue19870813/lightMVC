@@ -3,6 +3,7 @@
  */
 import BaseCommand from "../base/BaseCommand";
 import BaseModel from "../base/BaseModel";
+import {Facade} from "../Facade";
 
 export default abstract class SimpleCommand extends BaseCommand {
 
@@ -23,12 +24,22 @@ export default abstract class SimpleCommand extends BaseCommand {
         return null;
     }
 
-    public sendCmd(): void {
-
+    /**
+     * 执行命令
+     * @param {{new (): BaseCommand}} command 命令对象
+     * @param {Object} body 命令参数
+     */
+    public sendCmd(command: {new (): BaseCommand}, body?: any): void {
+        Facade.getInstance().__sendCommand__(command, body);
     }
 
-    public undoCmd(): void {
-
+    /**
+     * 撤销命令
+     * @param {{new (): BaseCommand}} command 命令对象
+     * @param {Object} body 命令参数
+     */
+    public undoCmd(command: {new (): BaseCommand}, body?: any): void {
+        Facade.getInstance().__undoCommand__(command, body);
     }
 
     public sendNoti(): void {

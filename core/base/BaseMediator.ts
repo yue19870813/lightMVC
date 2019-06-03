@@ -8,7 +8,7 @@ import {Facade} from "../Facade";
  * @author Yue
  * @description 生命周期
  *      BaseMediator.init
- *      BaseView.__init
+ *      BaseView.__init__
  *      BaseMediator.viewDidAppear
  */
 export default class BaseMediator {
@@ -38,7 +38,7 @@ export default class BaseMediator {
      * @param {BaseMediator} target 回调绑定对象
      */
     public bindEvent(name: string, cb: (body: any)=>void, target: BaseMediator): void {
-        this.view.__bindEvent(name, cb, target);
+        this.view.__bindEvent__(name, cb, target);
     }
 
     public registerNoti(noti: string, cb: (data: any)=>void, target: any): void {
@@ -49,12 +49,16 @@ export default class BaseMediator {
 
     }
 
-    public sendCmd<T extends BaseCommand>(cmd: {prototype: T}, data: any): void {
-        
+    /**
+     * 发送命令接口
+     * @param {{new (): BaseCommand}} cmd 命令类
+     * @param {Object} data 命令参数
+     */
+    public sendCmd<T extends BaseCommand>(cmd: {new (): T}, data: any): void {
+        Facade.getInstance().__sendCommand__(cmd, data);
     }
 
     /**
-     * todo:  will remove
      * 打开view界面
      * @param {{new(): BaseMediator}} mediator 界面mediator类型，类类型。
      * @param {{new(): BaseView}} view view 场景mediator类型，类类型。

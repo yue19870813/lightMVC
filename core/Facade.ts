@@ -3,6 +3,8 @@ import BaseMediator from "./base/BaseMediator";
 import BaseScene from "./base/BaseScene";
 import {BaseView} from "./base/BaseView";
 import {OPEN_VIEW_OPTION} from "./Constants";
+import BaseCommand from "./base/BaseCommand";
+import CommandManager from "./manager/CommandManager";
 
 export class Facade {
 
@@ -45,20 +47,35 @@ export class Facade {
     public addLayer(mediator: {new(): BaseMediator}, view: {new(): BaseView}, zOrder?: number, data?: any): void {
         ViewManager.getInstance().__showView__(mediator, view, data, OPEN_VIEW_OPTION.LAYER, zOrder);
     }
+    /**
+     * 执行命令
+     * @param {{new (): BaseCommand}} command 命令对象
+     * @param {Object} body 命令参数
+     */
+    public __sendCommand__(command: {new (): BaseCommand}, body?: any): void {
+        CommandManager.getInstance().__executeCommand__(command, body);
+    }
 
-    public registerCmd(): void {
+    /**
+     * 撤销命令
+     * @param {{new (): BaseCommand}} command 命令对象
+     * @param {Object} body 命令参数
+     */
+    public __undoCommand__(command: {new (): BaseCommand}, body?: any): void {
+        CommandManager.getInstance().__undoCommand__(command, body);
+    }
+
+    /**
+     *
+     * @param key
+     * @param body
+     * @private
+     */
+    public __sendNotification__(key: string, body: any): void {
 
     }
 
-    public __sendCommand(): void {
-
-    }
-
-    public __undoCommand(): void {
-
-    }
-
-    public __sendNotification(): void {
+    public registerModel(): void {
 
     }
 }

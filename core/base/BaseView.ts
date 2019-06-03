@@ -47,7 +47,7 @@ export class BaseView extends cc.Component {
      * @param {BaseMediator} target 事件回调绑定对象
      * @private 私有函数，不得调用。
      */
-    public __bindEvent(name: string, cb: (body: any)=>void, target): void {
+    public __bindEvent__(name: string, cb: (body: any)=>void, target): void {
         this.__event__.on(name, cb, target);
     }
 

@@ -33,7 +33,7 @@ export default class CommandManager {
      * @param {{new (): BaseCommand}} command 命令对象
      * @param {Object} body 命令参数
      */
-    public executeCommand(command: {new (): BaseCommand}, body?: any): void {
+    public __executeCommand__(command: {new (): BaseCommand}, body?: any): void {
         if (cc.js.isChildClassOf(command, SimpleCommand)) {
             let cmd: SimpleCommand = new command() as SimpleCommand;
             cmd.execute(body);
@@ -55,7 +55,7 @@ export default class CommandManager {
      * @param {{new (): BaseCommand}} command 命令对象
      * @param {Object} body 命令参数
      */
-    public undoCommand(command: {new (): BaseCommand}, body?: any): void {
+    public __undoCommand__(command: {new (): BaseCommand}, body?: any): void {
         if (cc.js.isChildClassOf(command, SimpleCommand)) {
             let cmd: SimpleCommand = new command() as SimpleCommand;
             cmd.undo(body);

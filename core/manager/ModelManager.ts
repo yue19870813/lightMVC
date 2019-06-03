@@ -8,14 +8,14 @@ export default class ModelManager {
     private static _instance: ModelManager = new ModelManager();
 
     /** 数据model集合 */
-    private _modelList: {}[];
+    private _modelList: {};
 
     /**
      * @constructor
      * @private
      */
     private constructor () {
-        this._modelList = [];
+        this._modelList = {};
     }
 
     /**

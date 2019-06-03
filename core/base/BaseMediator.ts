@@ -14,6 +14,9 @@ import {Facade} from "../Facade";
 export default class BaseMediator {
     /** 当前中介者持有的view视图 */
     public view: BaseView;
+    /** 当前中介者中注册的消息列表 */
+    private _notiMap: Map<string, {key: string, cb: (data: any)=>void, target: any}>;
+
     /**
      * 初始化接口,此时视图还没有创建，如果想操作视图view请在viewDidAppear函数中进行。
      * @param {Object} data 自定义的任意类型透传数据。（可选）
@@ -21,6 +24,14 @@ export default class BaseMediator {
      * */
     public init(data?: any): void {
 
+    }
+
+    /**
+     * 内部初始化使用，外部不要调用。
+     * @private
+     */
+    private __init__(): void {
+        this._notiMap = new Map<string, {key: string, cb: (data: any)=>void, target: any}>();
     }
 
     /**
@@ -41,12 +52,23 @@ export default class BaseMediator {
         this.view.__bindEvent__(name, cb, target);
     }
 
+    /**
+     * 注册消息监听
+     * @param {string} noti 通知key值
+     * @param {(data: any)=>void} cb 通知监听的回调函数
+     * @param {Object} target 回调绑定的对象
+     */
     public registerNoti(noti: string, cb: (data: any)=>void, target: any): void {
-
+        this._notiMap.set(noti, {key: noti, cb: cb, target: target});
     }
 
-    public sendNoti(noti: string, data: any): void {
-
+    /**
+     * 发送消息通知
+     * @param {string} noti 通知key值
+     * @param {Object} body 消息传递的参数
+     */
+    public sendNoti(noti: string, body: any): void {
+        Facade.getInstance().__sendNotification__(noti, body);
     }
 
     /**
@@ -67,10 +89,13 @@ export default class BaseMediator {
     public popView(mediator: {new(): BaseMediator}, view: {new(): BaseView}, data?: any): void {
         Facade.getInstance().addLayer(mediator, view, data);
     }
-    
-    public getModel<T extends BaseModel>(model: {prototype: T}): T {
 
-        return null;
+    /**
+     * 获取model对象
+     * @param {{new (): BaseModel}} model
+     */
+    public getModel<T extends BaseModel>(model: {new (): T}): T {
+        return Facade.getInstance().getModel(model);
     }
 
 }

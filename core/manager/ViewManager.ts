@@ -10,12 +10,15 @@ import Canvas = cc.Canvas;
  * @description 负责控制和维护框架各个节点和结构间的跳转和关联。
  */
 export class ViewManager {
+
     // 实例
     private static _instance: ViewManager = new ViewManager();
 
-    // 当前显示的pop view列表
+    /** 当前场景 */
+    private _curScene: BaseMediator;
+    /** 当前显示的pop view列表 */
     private _popViewList: BaseMediator[];
-    // 当前显示的layer view列表
+    /** 当前显示的layer view列表 */
     private _layerViewList: BaseMediator[];
 
     /**
@@ -44,7 +47,11 @@ export class ViewManager {
     public __runScene__(mediator: {new(): BaseMediator}, view: {new(): BaseScene}, data?: any): void {
         // 创建并绑定场景
         let sceneMediator: BaseMediator = new mediator();
+        sceneMediator["__init__"]();
         sceneMediator.init(data);
+
+        // 保存当前场景
+        this._curScene = sceneMediator;
 
         // 处理场景显示逻辑
         let scenePath: string = (<any>(view)).path();
@@ -88,6 +95,7 @@ export class ViewManager {
 
         // 创建并绑定view
         let viewMediator: BaseMediator = new mediator();
+        viewMediator["__init__"]();
         viewMediator.init(data);
 
         // 处理场景显示逻辑
@@ -147,6 +155,15 @@ export class ViewManager {
     }
 
 
+    get popViewList(): BaseMediator[] {
+        return this._popViewList;
+    }
+    get layerViewList(): BaseMediator[] {
+        return this._layerViewList;
+    }
+    get curScene(): BaseMediator {
+        return this._curScene;
+    }
 }
 
 /**

@@ -2,6 +2,8 @@
  * 视图事件类，负责处理view与mediator之间的事件监听和派发
  * @author Yue
  */
+import BaseMediator from "./BaseMediator";
+
 export default class ViewEvent{
 
     /** 事件列表 */
@@ -49,7 +51,7 @@ export default class ViewEvent{
      * @return {boolean} 是否移除
      */
     public remove(name: string): boolean {
-
+        // TODO: 移除指定事件
         return true;
     }
 

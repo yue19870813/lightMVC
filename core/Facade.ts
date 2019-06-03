@@ -5,6 +5,9 @@ import {BaseView} from "./base/BaseView";
 import {OPEN_VIEW_OPTION} from "./Constants";
 import BaseCommand from "./base/BaseCommand";
 import CommandManager from "./manager/CommandManager";
+import ModelManager from "./manager/ModelManager";
+import BaseModel from "./base/BaseModel";
+import NotificationManager from "./manager/NotificationManager";
 
 export class Facade {
 
@@ -66,23 +69,29 @@ export class Facade {
     }
 
     /**
-     *
-     * @param key
-     * @param body
+     * 发送消息通知
+     * @param {string} noti 通知key值
+     * @param {Object} body 消息传递的参数
      * @private
      */
-    public __sendNotification__(key: string, body: any): void {
-
+    public __sendNotification__(noti: string, body: any): void {
+        NotificationManager.getInstance().__sendNotification__(noti, body);
     }
 
-    public registerModel(): void {
+    /**
+     * 注册数据model
+     * @param {{new (): BaseModel}} model
+     */
+    public registerModel(model: {new (): BaseModel}): void {
+        ModelManager.getInstance().registerModel(model);
+    }
 
+    /**
+     * 获取model对象
+     * @param {{new (): BaseModel}} model
+     */
+    public getModel<T extends BaseModel>(model: {new (): T}): T {
+        return ModelManager.getInstance().getModel(model);
     }
 }
 
-/** 导入到全局属性mvc中的对外接口和属性等api */
-(<any>(window)).mvc = {
-    /** mvc全局控制类 */
-    facade: Facade.getInstance(),
-
-};

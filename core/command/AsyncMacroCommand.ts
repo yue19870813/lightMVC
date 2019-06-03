@@ -1,29 +1,9 @@
 /**
  * 命令基类
  */
-import BaseCommand from "../base/BaseCommand";
-import BaseModel from "../base/BaseModel";
+import MacroCommand from "./MacroCommand";
 
-export default abstract class SimpleCommand extends BaseCommand {
+export default abstract class AsyncMacroCommand extends MacroCommand {
 
-    public abstract execute(): void;
 
-    public abstract undo(): void;
-
-    public getModel<T extends BaseModel>(model: {prototype: T}): T {
-
-        return null;
-    }
-
-    public sendCmd(): void {
-
-    }
-
-    public undoCmd(): void {
-
-    }
-
-    public sendNoti(): void {
-
-    }
 }

@@ -32,7 +32,13 @@ export class AppFacade  {
      * @param {boolean} fitWidth 是否宽适配
      */
     public initFramework(debug: boolean, designResolution: cc.Size, fitHeight: boolean, fitWidth: boolean): void {
+        // 初始化框架基本配置
         this.getFacade().init(debug, designResolution, fitHeight, fitWidth);
+    }
+
+    // TODO:初始化游戏数据
+    public initAppData(): void {
+
     }
 
     /**

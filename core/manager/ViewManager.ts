@@ -50,6 +50,11 @@ export class ViewManager {
         sceneMediator["__init__"]();
         sceneMediator.init(data);
 
+        // 如果前一场景不为空则进行清理
+        if (this._curScene) {
+            this._curScene.destroy();
+        }
+
         // 保存当前场景
         this._curScene = sceneMediator;
 

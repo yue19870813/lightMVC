@@ -11,7 +11,7 @@ import {Facade} from "../Facade";
  *      BaseView.__init__
  *      BaseMediator.viewDidAppear
  */
-export default class BaseMediator {
+export default abstract class BaseMediator {
     /** 当前中介者持有的view视图 */
     public view: BaseView;
     /** 当前中介者中注册的消息列表 */
@@ -22,9 +22,7 @@ export default class BaseMediator {
      * @param {Object} data 自定义的任意类型透传数据。（可选）
      * @override
      * */
-    public init(data?: any): void {
-
-    }
+    public abstract init(data?: any): void;
 
     /**
      * 内部初始化使用，外部不要调用。
@@ -38,9 +36,7 @@ export default class BaseMediator {
      * 视图显示后会调用的接口
      * @override
      */
-    public viewDidAppear(): void {
-
-    }
+    public abstract viewDidAppear(): void;
 
     /**
      * 绑定UI事件，接收view层派发的事件。
@@ -98,4 +94,9 @@ export default class BaseMediator {
         return Facade.getInstance().getModel(model);
     }
 
+    /**
+     * 销毁接口
+     * @override
+     */
+    public abstract destroy(): void;
 }

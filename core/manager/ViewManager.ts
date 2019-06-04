@@ -3,7 +3,7 @@ import BaseMediator from "../base/BaseMediator";
 import BaseScene from "../base/BaseScene";
 import {OPEN_VIEW_OPTION} from "../Constants";
 import Canvas = cc.Canvas;
-import FrameworkCfg from "./FrameworkCfg";
+import FrameworkCfg from "../FrameworkCfg";
 
 /**
  * mvc框架控制类
@@ -163,7 +163,7 @@ export class ViewManager {
         }
     }
 
-
+    /**************************** getter and setter ******************************/
     get popViewList(): BaseMediator[] {
         return this._popViewList;
     }

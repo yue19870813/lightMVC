@@ -34,6 +34,28 @@ export class AppFacade  {
     public initFramework(debug: boolean, designResolution: cc.Size, fitHeight: boolean, fitWidth: boolean): void {
         this.getFacade().init(debug, designResolution, fitHeight, fitWidth);
     }
+
+    /**
+     * 根据配置生成场景
+     * @param {Object} cfg 配置
+     * @example 数据格式如下：
+     *  {
+     *      viewClass: "",
+     *      mediatorClass: "",
+     *      children: [
+     *          {
+     *              viewClass: "",
+     *              mediatorClass: "",
+     *          }, {
+     *              viewClass: "",
+     *              mediatorClass: "",
+     *          }
+     *      ]
+     *  }
+     */
+    public createSceneWithCfg(cfg: any): void {
+        // TODO 根据配置生成场景
+    }
 }
 
 /** 导入到全局属性mvc中的对外接口和属性等api */

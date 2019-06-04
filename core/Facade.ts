@@ -8,7 +8,7 @@ import CommandManager from "./manager/CommandManager";
 import ModelManager from "./manager/ModelManager";
 import BaseModel from "./base/BaseModel";
 import NotificationManager from "./manager/NotificationManager";
-import FrameworkCfg from "./manager/FrameworkCfg";
+import FrameworkCfg from "./FrameworkCfg";
 
 export class Facade {
     /** 实例对象 */

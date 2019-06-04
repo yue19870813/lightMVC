@@ -8,10 +8,13 @@ import CommandManager from "./manager/CommandManager";
 import ModelManager from "./manager/ModelManager";
 import BaseModel from "./base/BaseModel";
 import NotificationManager from "./manager/NotificationManager";
+import FrameworkCfg from "./manager/FrameworkCfg";
 
 export class Facade {
-
+    /** 实例对象 */
     private static _instance: Facade = new Facade();
+    /** 框架是否被初始化 */
+    private static _isInit: boolean = false;
 
     private constructor () {
 
@@ -20,6 +23,26 @@ export class Facade {
     public static getInstance(): Facade {
         return this._instance;
     }
+
+    /**
+     * 初始化框架配置
+     * @param {boolean} debug 是否是调试状态
+     * @param {cc.Size} designResolution 设计分辨率
+     * @param {boolean} fitHeight 是否高适配
+     * @param {boolean} fitWidth 是否宽适配
+     */
+    public init(debug: boolean, designResolution: cc.Size, fitHeight: boolean, fitWidth: boolean): void {
+        if (Facade._isInit) {
+            console.warn("框架已经初始化，不需要重复初始化。");
+            return;
+        }
+        Facade._isInit = true;
+        FrameworkCfg.DEBUG = debug;
+        FrameworkCfg.DESIGN_RESOLUTION = designResolution;
+        FrameworkCfg.FIT_HEIGHT = fitHeight;
+        FrameworkCfg.FIT_WIDTH = fitWidth;
+    }
+
     /**
      * 运行场景
      * @param {{new(): BaseMediator}} mediator 场景mediator类型，类类型。
@@ -27,7 +50,11 @@ export class Facade {
      * @param {Object} data 自定义的任意类型透传数据。（可选）
      */
     public runScene(mediator: {new(): BaseMediator}, view: {new(): BaseScene}, data?: any): void {
-        ViewManager.getInstance().__runScene__(mediator, view, data);
+        if (Facade._isInit) {
+            ViewManager.getInstance().__runScene__(mediator, view, data);
+        } else {
+            console.warn("框架没有初始化，请先调用init接口进行初始化。");
+        }
     }
 
     /**

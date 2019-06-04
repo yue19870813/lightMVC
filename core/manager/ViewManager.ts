@@ -3,6 +3,7 @@ import BaseMediator from "../base/BaseMediator";
 import BaseScene from "../base/BaseScene";
 import {OPEN_VIEW_OPTION} from "../Constants";
 import Canvas = cc.Canvas;
+import FrameworkCfg from "./FrameworkCfg";
 
 /**
  * mvc框架控制类
@@ -65,7 +66,10 @@ export class ViewManager {
             ccs.name = "Scene";
             let canvasNode = new cc.Node();
             canvasNode.name = "Canvas";
-            canvasNode.addComponent(cc.Canvas);
+            let canvas = canvasNode.addComponent(cc.Canvas);
+            canvas.designResolution = FrameworkCfg.DESIGN_RESOLUTION;
+            canvas.fitHeight = FrameworkCfg.FIT_HEIGHT;
+            canvas.fitWidth = FrameworkCfg.FIT_WIDTH;
             sceneMediator.view = canvasNode.addComponent(view);
             sceneMediator.view.__init__();
             ccs.addChild(canvasNode);

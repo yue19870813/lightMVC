@@ -23,11 +23,21 @@ export class AppFacade  {
     public getFacade(): Facade {
         return Facade.getInstance();
     }
+
+    /**
+     * 初始化框架配置
+     * @param {boolean} debug 是否是调试状态
+     * @param {cc.Size} designResolution 设计分辨率
+     * @param {boolean} fitHeight 是否高适配
+     * @param {boolean} fitWidth 是否宽适配
+     */
+    public initFramework(debug: boolean, designResolution: cc.Size, fitHeight: boolean, fitWidth: boolean): void {
+        this.getFacade().init(debug, designResolution, fitHeight, fitWidth);
+    }
 }
 
 /** 导入到全局属性mvc中的对外接口和属性等api */
 (<any>(window)).mvc = {
-    /** mvc全局控制类 */
-    facade: AppFacade.getInstance().getFacade(),
+    appFacade: AppFacade.getInstance(),
 };
 

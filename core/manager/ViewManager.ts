@@ -43,9 +43,10 @@ export class ViewManager {
      * @param {{new(): BaseMediator}} mediator 场景mediator类型，类类型。
      * @param {{new(): BaseScene}} view 场景mediator类型，类类型。
      * @param {Object} data 自定义的任意类型透传数据。（可选）
+     * @param {()=>void} cb 加载完成回调.
      * @private
      */
-    public __runScene__(mediator: {new(): BaseMediator}, view: {new(): BaseScene}, data?: any): void {
+    public __runScene__(mediator: {new(): BaseMediator}, view: {new(): BaseScene}, data?: any, cb?: ()=>void): void {
         // 创建并绑定场景
         let sceneMediator: BaseMediator = new mediator();
         sceneMediator["__init__"]();
@@ -75,6 +76,7 @@ export class ViewManager {
             ccs.addChild(canvasNode);
             cc.director.runSceneImmediate(ccs);
             sceneMediator.viewDidAppear();
+            cb && cb();
         } else {
             cc.director.loadScene(scenePath, ()=>{
                 let canvas = cc.director.getScene().getChildByName('Canvas');
@@ -82,6 +84,7 @@ export class ViewManager {
                     sceneMediator.view = canvas.addComponent(view);
                     sceneMediator.view.__init__();
                     sceneMediator.viewDidAppear();
+                    cb && cb();
                 } else {
                     console.log("场景中必须包含默认的Canvas节点！");
                 }
@@ -96,9 +99,10 @@ export class ViewManager {
      * @param {Object} data 自定义的任意类型透传数据。（可选）
      * @param {OPEN_VIEW_OPTION} option 打开ui的操作选项，枚举类型。
      * @param {number} zOrder 层级。
+     * @param {()=>void} cb 加载完成回调.
      */
     public __showView__(mediator: {new(): BaseMediator}, view: {new(): BaseView},
-                        data?: any, option?: OPEN_VIEW_OPTION, zOrder?: number): void {
+                        data?: any, option?: OPEN_VIEW_OPTION, zOrder?: number, cb?: ()=>void): void {
         // 处理打开UI的其他操作
         this.openViewOptionHandler(option);
 
@@ -112,6 +116,7 @@ export class ViewManager {
         if (viewPath === "") {
             let viewNode = new cc.Node();
             this.initViewMediator(viewMediator, viewNode, view);
+            cb && cb();
         } else {
             cc.loader.loadRes(viewPath, cc.Prefab, (err, prefab)=>{
                 if (err) {
@@ -120,6 +125,7 @@ export class ViewManager {
                 }
                 let viewNode = cc.instantiate(prefab);
                 this.initViewMediator(viewMediator, viewNode, view);
+                cb && cb();
             });
         }
     }

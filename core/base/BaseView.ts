@@ -13,21 +13,13 @@ export class BaseView extends cc.Component {
 
     public __init__(): void {
         this.__event__ = new ViewEvent();
+        this.init();
     }
 
+    /**
+     * view 创建时会被调用，子类可以重写.
+     */
     public init(): void {
-
-    }
-
-    public onLoad () {
-
-    }
-
-    public start () {
-
-    }
-
-    public update (dt: number) {
 
     }
 
@@ -51,16 +43,22 @@ export class BaseView extends cc.Component {
         this.__event__.on(name, cb, target);
     }
 
+    /**
+     * 关闭当前的界面
+     */
     public closeView(): void {
-
-    }
-
-    public closeAllPopView(): void {
-
+        // TODO
     }
 
     /**
-     * 但界面被关闭时会被调用，子类可以重写该方法。
+     * 关闭所有弹出的界面
+     */
+    public closeAllPopView(): void {
+        // TODO
+    }
+
+    /**
+     * TODO 当界面被关闭时会被调用，子类可以重写该方法。
      * @override
      */
     public onClose(): void {

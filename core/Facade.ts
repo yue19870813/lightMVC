@@ -48,10 +48,11 @@ export class Facade {
      * @param {{new(): BaseMediator}} mediator 场景mediator类型，类类型。
      * @param {{new(): BaseScene}} view 场景mediator类型，类类型。
      * @param {Object} data 自定义的任意类型透传数据。（可选）
+     * @param {()=>void} cb 加载完成回调.
      */
-    public runScene(mediator: {new(): BaseMediator}, view: {new(): BaseScene}, data?: any): void {
+    public runScene(mediator: {new(): BaseMediator}, view: {new(): BaseScene}, data?: any, cb?: ()=>void): void {
         if (Facade._isInit) {
-            ViewManager.getInstance().__runScene__(mediator, view, data);
+            ViewManager.getInstance().__runScene__(mediator, view, data, cb);
         } else {
             console.warn("框架没有初始化，请先调用init接口进行初始化。");
         }
@@ -62,9 +63,10 @@ export class Facade {
      * @param {{new(): BaseMediator}} mediator 界面mediator类型，类类型。
      * @param {{new(): BaseView}} view view 场景mediator类型，类类型。
      * @param {Object} data 自定义的任意类型透传数据。（可选）
+     * @param {()=>void} cb 加载完成回调.
      */
-    public popView(mediator: {new(): BaseMediator}, view: {new(): BaseView}, data?: any): void {
-        ViewManager.getInstance().__showView__(mediator, view, data, OPEN_VIEW_OPTION.OVERLAY, 0);
+    public popView(mediator: {new(): BaseMediator}, view: {new(): BaseView}, data?: any, cb?: ()=>void): void {
+        ViewManager.getInstance().__showView__(mediator, view, data, OPEN_VIEW_OPTION.OVERLAY, 0, cb);
     }
 
     /**
@@ -73,9 +75,10 @@ export class Facade {
      * @param {{new(): BaseView}} view view 场景mediator类型，类类型。
      * @param {number} zOrder ui层级
      * @param {Object} data 自定义的任意类型透传数据。（可选）
+     * @param {()=>void} cb 加载完成回调.
      */
-    public addLayer(mediator: {new(): BaseMediator}, view: {new(): BaseView}, zOrder?: number, data?: any): void {
-        ViewManager.getInstance().__showView__(mediator, view, data, OPEN_VIEW_OPTION.LAYER, zOrder);
+    public addLayer(mediator: {new(): BaseMediator}, view: {new(): BaseView}, zOrder?: number, data?: any, cb?: ()=>void): void {
+        ViewManager.getInstance().__showView__(mediator, view, data, OPEN_VIEW_OPTION.LAYER, zOrder, cb);
     }
     /**
      * 执行命令

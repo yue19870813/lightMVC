@@ -51,8 +51,14 @@ export default class ViewEvent{
      * @return {boolean} 是否移除
      */
     public remove(name: string): boolean {
-        // TODO: 移除指定事件
-        return true;
+        // 移除指定事件
+        for (let i = 0; i < this._eventList.length; i++) {
+            if (name === this._eventList[i].name) {
+                this._eventList.splice(i, 1);
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

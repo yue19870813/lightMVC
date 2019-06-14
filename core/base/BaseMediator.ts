@@ -2,6 +2,8 @@ import BaseCommand from "./BaseCommand";
 import { BaseView } from "./BaseView";
 import BaseModel from "./BaseModel";
 import {Facade} from "../Facade";
+import NotificationManager from "../manager/NotificationManager";
+import CommandManager from "../manager/CommandManager";
 
 /**
  * 视图中介者基类
@@ -64,7 +66,7 @@ export default abstract class BaseMediator {
      * @param {Object} body 消息传递的参数
      */
     public sendNoti(noti: string, body: any): void {
-        Facade.getInstance().__sendNotification__(noti, body);
+        NotificationManager.getInstance().__sendNotification__(noti, body);
     }
 
     /**
@@ -73,7 +75,7 @@ export default abstract class BaseMediator {
      * @param {Object} data 命令参数
      */
     public sendCmd<T extends BaseCommand>(cmd: {new (): T}, data: any): void {
-        Facade.getInstance().__sendCommand__(cmd, data);
+        CommandManager.getInstance().__executeCommand__(cmd, data);
     }
 
     /**

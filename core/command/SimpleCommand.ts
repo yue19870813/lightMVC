@@ -4,6 +4,7 @@
 import BaseCommand from "../base/BaseCommand";
 import BaseModel from "../base/BaseModel";
 import {Facade} from "../Facade";
+import CommandManager from "../manager/CommandManager";
 
 export default abstract class SimpleCommand extends BaseCommand {
 
@@ -19,9 +20,12 @@ export default abstract class SimpleCommand extends BaseCommand {
      */
     public abstract undo(body?: any): void;
 
-    public getModel<T extends BaseModel>(model: {prototype: T}): T {
-
-        return null;
+    /**
+     * 获取model对象
+     * @param {{new (): BaseModel}} model
+     */
+    public getModel<T extends BaseModel>(model: {new (): T}): T {
+        return Facade.getInstance().getModel(model);
     }
 
     /**
@@ -30,7 +34,7 @@ export default abstract class SimpleCommand extends BaseCommand {
      * @param {Object} body 命令参数
      */
     public sendCmd(command: {new (): BaseCommand}, body?: any): void {
-        Facade.getInstance().__sendCommand__(command, body);
+        CommandManager.getInstance().__executeCommand__(command, body);
     }
 
     /**

@@ -154,6 +154,37 @@ export class ViewManager {
     }
 
     /**
+     * 关闭指定View
+     * @param view
+     * @private
+     */
+    public __closeView__(view: BaseView): void {
+        for (let i = 0; i < this._popViewList.length; i++) {
+            if (this._popViewList[i].view === view) {
+                this._popViewList.splice(i, 1);
+                return;
+            }
+        }
+        for (let i = 0; i < this._layerViewList.length; i++) {
+            if (this._layerViewList[i].view === view) {
+                this._layerViewList.splice(i, 1);
+                return;
+            }
+        }
+    }
+
+    /**
+     * 关闭所有弹出窗口
+     * @private
+     */
+    public __closeAllPopView__():void {
+        for (let i = 0; i < this._popViewList.length; i++) {
+            this._popViewList[i]["__onClose__"]();
+        }
+        this._popViewList = [];
+    }
+
+    /**
      * 根据参数处理ui的打开方式
      * @param option
      * @private

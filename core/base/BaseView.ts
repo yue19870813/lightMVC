@@ -2,6 +2,7 @@
  * 视图基类
  */
 import ViewEvent from "./ViewEvent";
+import {ViewManager} from "../manager/ViewManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -47,18 +48,25 @@ export class BaseView extends cc.Component {
      * 关闭当前的界面
      */
     public closeView(): void {
-        // TODO
+        ViewManager.getInstance().__closeView__(this);
+        this.__onClose__();
     }
 
     /**
      * 关闭所有弹出的界面
      */
     public closeAllPopView(): void {
-        // TODO
+        ViewManager.getInstance().__closeAllPopView__();
+    }
+
+    private __onClose__(): void {
+        this.__event__.destroy();
+        this.onClose();
+        this.node.destroy();
     }
 
     /**
-     * TODO 当界面被关闭时会被调用，子类可以重写该方法。
+     * 当界面被关闭时会被调用，子类可以重写该方法。
      * @override
      */
     public onClose(): void {

@@ -68,7 +68,13 @@ export default class ModelManager {
      * 释放并移除所有model
      */
     public removeAllModel(): void {
-        // TODO: 释放并移除所有model
+        //  释放并移除所有model
+        for (let key in this._modelList) {
+            let model: BaseModel = this._modelList[key];
+            model.clear();
+            delete this._modelList[key];
+        }
+        this._modelList = {};
     }
 
 }

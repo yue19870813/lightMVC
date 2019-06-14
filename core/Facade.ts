@@ -59,7 +59,7 @@ export class Facade {
     }
 
     /**
-     * 打开view界面
+     * 打开view界面，弹出界面
      * @param {{new(): BaseMediator}} mediator 界面mediator类型，类类型。
      * @param {{new(): BaseView}} view view 场景mediator类型，类类型。
      * @param {Object} data 自定义的任意类型透传数据。（可选）
@@ -70,7 +70,7 @@ export class Facade {
     }
 
     /**
-     * 创建view层
+     * 创建view层，此接口用于初始不会被关闭和再次打开的常驻界面，所以它也不会受到pooView影响和管理。
      * @param {{new(): BaseMediator}} mediator 界面mediator类型，类类型。
      * @param {{new(): BaseView}} view view 场景mediator类型，类类型。
      * @param {number} zOrder ui层级
@@ -80,14 +80,6 @@ export class Facade {
     public addLayer(mediator: {new(): BaseMediator}, view: {new(): BaseView}, zOrder?: number, data?: any, cb?: ()=>void): void {
         ViewManager.getInstance().__showView__(mediator, view, data, OPEN_VIEW_OPTION.LAYER, zOrder, cb);
     }
-    /**
-     * 执行命令
-     * @param {{new (): BaseCommand}} command 命令对象
-     * @param {Object} body 命令参数
-     */
-    public __sendCommand__(command: {new (): BaseCommand}, body?: any): void {
-        CommandManager.getInstance().__executeCommand__(command, body);
-    }
 
     /**
      * 撤销命令
@@ -96,16 +88,6 @@ export class Facade {
      */
     public __undoCommand__(command: {new (): BaseCommand}, body?: any): void {
         CommandManager.getInstance().__undoCommand__(command, body);
-    }
-
-    /**
-     * 发送消息通知
-     * @param {string} noti 通知key值
-     * @param {Object} body 消息传递的参数
-     * @private
-     */
-    public __sendNotification__(noti: string, body: any): void {
-        NotificationManager.getInstance().__sendNotification__(noti, body);
     }
 
     /**
@@ -124,4 +106,9 @@ export class Facade {
         return ModelManager.getInstance().getModel(model);
     }
 }
+
+/** 导入到全局属性mvc中的对外接口和属性等api */
+(<any>(window)).mvc = {
+    appFacade: Facade.getInstance(),
+};
 

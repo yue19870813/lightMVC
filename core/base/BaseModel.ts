@@ -1,4 +1,4 @@
-import {Facade} from "../Facade";
+import NotificationManager from "../manager/NotificationManager";
 
 /**
  * 数据模型基类
@@ -17,7 +17,7 @@ export default abstract class BaseModel {
     * @param {Object} data 消息数据
     */
    public sendNoti(noti: string, data: any): void {
-      Facade.getInstance().__sendNotification__(noti, data);
+      NotificationManager.getInstance().__sendNotification__(noti, data);
    }
 
    /**

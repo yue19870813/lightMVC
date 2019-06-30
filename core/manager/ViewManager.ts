@@ -74,9 +74,12 @@ export class ViewManager {
             sceneMediator.view = canvasNode.addComponent(view);
             sceneMediator.view.__init__();
             ccs.addChild(canvasNode);
-            cc.director.runSceneImmediate(ccs);
-            sceneMediator.viewDidAppear();
-            cb && cb();
+            // 这里延迟1ms是为了让场景在下一帧加载
+            setTimeout(() => {
+                cc.director.runSceneImmediate(ccs);
+                sceneMediator.viewDidAppear();
+                cb && cb();
+            }, 1);
         } else {
             cc.director.loadScene(scenePath, ()=>{
                 let canvas = cc.director.getScene().getChildByName('Canvas');
@@ -211,7 +214,3 @@ export class ViewManager {
         return this._curScene;
     }
 }
-
-/**
- node version_generator.js -v 1.0.0 -u http://http://10.232.32.217:8080/remote/ -s build/jsb-default/ -d assets/
- */

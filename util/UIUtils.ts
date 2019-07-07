@@ -13,7 +13,7 @@ export default class UIUtils {
         }
         for (let t = 0, len = children.length; t < len; ++t) {
             let subChild = children[t];
-            map[subChild.name] = subChild;
+            map.set(subChild.name, subChild);
             UIUtils.createSubNodeMap(subChild, map);
         }
     }

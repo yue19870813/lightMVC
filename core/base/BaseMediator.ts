@@ -85,7 +85,18 @@ export default abstract class BaseMediator {
      * @param {Object} data 自定义的任意类型透传数据。（可选）
      */
     public popView(mediator: {new(): BaseMediator}, view: {new(): BaseView}, data?: any): void {
-        Facade.getInstance().addLayer(mediator, view, data);
+        Facade.getInstance().popView(mediator, view, data);
+    }
+
+    /**
+     * 添加层级
+     * @param {{new(): BaseMediator}} mediator 界面mediator类型，类类型。
+     * @param {{new(): BaseView}} view view 场景mediator类型，类类型。
+     * @param {number} zOrder 层级。（可选）
+     * @param {Object} data 自定义的任意类型透传数据。（可选）
+     */
+    public addLayer(mediator: {new(): BaseMediator}, view: {new(): BaseView}, zOrder?: number, data?: any): void {
+        Facade.getInstance().addLayer(mediator, view, zOrder, data);
     }
 
     /**

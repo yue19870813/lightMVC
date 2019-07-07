@@ -12,7 +12,7 @@ export class BaseView extends cc.Component {
 
     /** 当前视图的事件对象 */
     private __event__: ViewEvent;
-
+    /** UI节点引用 */
     public ui: UIContainer;
 
     public __init__(): void {

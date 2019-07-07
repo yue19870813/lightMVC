@@ -112,13 +112,14 @@ export class ViewManager {
         // 创建并绑定view
         let viewMediator: BaseMediator = new mediator();
         viewMediator["__init__"]();
-        viewMediator.init(data);
 
         // 处理场景显示逻辑
         let viewPath: string = (<any>(view)).path();
         if (viewPath === "") {
             let viewNode = new cc.Node();
-            this.initViewMediator(viewMediator, viewNode, view);
+            this.initViewMediator(viewMediator, viewNode, view, option);
+            viewMediator.init(data);
+            viewMediator.viewDidAppear();
             cb && cb();
         } else {
             cc.loader.loadRes(viewPath, cc.Prefab, (err, prefab)=>{
@@ -127,7 +128,9 @@ export class ViewManager {
                     return;
                 }
                 let viewNode = cc.instantiate(prefab);
-                this.initViewMediator(viewMediator, viewNode, view);
+                this.initViewMediator(viewMediator, viewNode, view, option);
+                viewMediator.init(data);
+                viewMediator.viewDidAppear();
                 cb && cb();
             });
         }
@@ -147,7 +150,6 @@ export class ViewManager {
         mediator.view = viewNode.addComponent(view);
         cc.director.getScene().getChildByName('Canvas').addChild(viewNode);
         mediator.view.__init__();
-        mediator.viewDidAppear();
         // 根据不同打开类型，存储到不同队列中。
         if (option === OPEN_VIEW_OPTION.OVERLAY || option === OPEN_VIEW_OPTION.SINGLE) {
             this._popViewList.push(mediator);
@@ -182,7 +184,7 @@ export class ViewManager {
      */
     public __closeAllPopView__():void {
         for (let i = 0; i < this._popViewList.length; i++) {
-            this._popViewList[i]["__onClose__"]();
+            this._popViewList[i].view["__onClose__"]();
         }
         this._popViewList = [];
     }

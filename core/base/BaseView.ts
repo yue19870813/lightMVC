@@ -33,7 +33,7 @@ export class BaseView extends cc.Component {
      * @param {string} event 事件名称
      * @param {Object} body 事件参数
      */
-    public sendEvent(event: string, body: any): void {
+    public sendEvent(event: string, body?: any): void {
         this.__event__.emit(event, body)
     }
 

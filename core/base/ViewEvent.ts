@@ -36,7 +36,7 @@ export default class ViewEvent{
      * @param {string} name 事件名称
      * @param {Object} body 事件参数，动态参数列表
      */
-    public emit(name: string, body: any): void {
+    public emit(name: string, body?: any): void {
         for (let e of this._eventList) {
             if (e.name === name) {
                 e.cb && e.cb.call(e.target, body);

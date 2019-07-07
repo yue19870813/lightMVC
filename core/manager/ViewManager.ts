@@ -145,8 +145,8 @@ export class ViewManager {
                              option?: OPEN_VIEW_OPTION, zOrder?: number): void {
         viewNode.zIndex = zOrder;
         mediator.view = viewNode.addComponent(view);
-        mediator.view.__init__();
         cc.director.getScene().getChildByName('Canvas').addChild(viewNode);
+        mediator.view.__init__();
         mediator.viewDidAppear();
         // 根据不同打开类型，存储到不同队列中。
         if (option === OPEN_VIEW_OPTION.OVERLAY || option === OPEN_VIEW_OPTION.SINGLE) {

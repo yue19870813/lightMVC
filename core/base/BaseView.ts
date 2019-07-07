@@ -3,6 +3,7 @@
  */
 import ViewEvent from "./ViewEvent";
 import {ViewManager} from "../manager/ViewManager";
+import UIUtils, { UIContainer } from "../../util/UIUtils";
 
 const {ccclass, property} = cc._decorator;
 
@@ -12,8 +13,11 @@ export class BaseView extends cc.Component {
     /** 当前视图的事件对象 */
     private __event__: ViewEvent;
 
+    public ui: UIContainer;
+
     public __init__(): void {
         this.__event__ = new ViewEvent();
+        this.ui = UIUtils.seekAllSubView(this.node);
         this.init();
     }
 
@@ -21,7 +25,7 @@ export class BaseView extends cc.Component {
      * view 创建时会被调用，子类可以重写.
      */
     public init(): void {
-
+        
     }
 
     /**

@@ -4,6 +4,7 @@ import BaseModel from "./BaseModel";
 import {Facade} from "../Facade";
 import NotificationManager from "../manager/NotificationManager";
 import CommandManager from "../manager/CommandManager";
+import BaseScene from "./BaseScene";
 
 /**
  * 视图中介者基类
@@ -76,6 +77,16 @@ export default abstract class BaseMediator {
      */
     public sendCmd<T extends BaseCommand>(cmd: {new (): T}, data: any): void {
         CommandManager.getInstance().__executeCommand__(cmd, data);
+    }
+
+    /**
+     * 打开新场景
+     * @param mediator 
+     * @param view 
+     * @param data {Object} data 自定义的任意类型透传数据。（可选）
+     */
+    public runScene(mediator: {new(): BaseMediator}, view: {new(): BaseScene}, data?: any): void {
+        Facade.getInstance().runScene(mediator, view, data);
     }
 
     /**

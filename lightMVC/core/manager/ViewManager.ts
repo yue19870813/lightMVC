@@ -15,6 +15,13 @@ export class ViewManager {
     // 实例
     private static _instance: ViewManager = new ViewManager();
 
+    /** 上一场景类 */
+    private _preSceneMediatorCls: {new(): BaseMediator} = null;
+    private _preSceneViewCls: {new(): BaseScene} = null;
+    /** 当前场景类 */
+    private _curSceneMediatorCls: {new(): BaseMediator} = null;
+    private _curSceneViewCls: {new(): BaseScene} = null;
+
     /** 当前场景 */
     private _curScene: BaseMediator;
     /** 当前显示的pop view列表 */
@@ -60,6 +67,14 @@ export class ViewManager {
         // 保存当前场景
         this._curScene = sceneMediator;
 
+        if (this._curSceneMediatorCls != null && this._curSceneViewCls != null) {
+            this._preSceneMediatorCls = this._curSceneMediatorCls;
+            this._preSceneViewCls = this._curSceneViewCls;
+        }
+
+        this._curSceneMediatorCls = mediator;
+        this._curSceneViewCls = view;
+
         // 处理场景显示逻辑
         let scenePath: string = (<any>(view)).path();
         if (scenePath === "") {
@@ -95,6 +110,18 @@ export class ViewManager {
                 }
             });
         }
+    }
+
+    /**
+     * 返回上一场景
+     * @returns {boolean}是否存在上一个场景
+     */
+    public __backScene__(): boolean {
+        if (this._preSceneMediatorCls && this._preSceneViewCls) {
+            this.__runScene__(this._preSceneMediatorCls, this._preSceneViewCls);
+            return true;
+        }
+        return false;
     }
 
     /**

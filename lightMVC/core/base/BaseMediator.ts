@@ -90,6 +90,14 @@ export default abstract class BaseMediator {
     }
 
     /**
+     * 返回上一场景
+     * @returns {boolean}是否存在上一个场景
+     */
+    public backScene(): boolean {
+        return Facade.getInstance().backScene();
+    }
+
+    /**
      * 打开view界面
      * @param {{new(): BaseMediator}} mediator 界面mediator类型，类类型。
      * @param {{new(): BaseView}} view view 场景mediator类型，类类型。

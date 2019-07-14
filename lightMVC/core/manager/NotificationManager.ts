@@ -30,7 +30,7 @@ export default class NotificationManager {
      * @param {Object} body 消息传递的参数
      * @private
      */
-    public __sendNotification__(noti: string, body: any): void {
+    public __sendNotification__(noti: string, body?: any): void {
         // pop view
         let popViewList: BaseMediator[] = ViewManager.getInstance().popViewList;
         this.loopMap(popViewList, noti, body);
@@ -48,9 +48,9 @@ export default class NotificationManager {
      * @param {string} noti 消息名称
      * @param {Object} body 消息传递的参数
      */
-    private loopMap(list: BaseMediator[], noti: string, body: any): void {
+    private loopMap(list: BaseMediator[], noti: string, body?: any): void {
         for (let med of list) {
-            let notiMap: Map<string, {key: string, cb: (data: any)=>void, target: any}> = med["_notiList"];
+            let notiMap: Map<string, {key: string, cb: (data: any)=>void, target: any}> = med["_notiMap"];
             notiMap.forEach((value: {key: string, cb: (data: any)=>void, target: any}, key: string)=>{
                 if (key === noti) {
                     value.cb.call(value.target, body);

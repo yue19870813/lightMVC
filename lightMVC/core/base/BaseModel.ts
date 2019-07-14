@@ -16,7 +16,7 @@ export default abstract class BaseModel {
     * @param {string} noti 消息名称
     * @param {Object} data 消息数据
     */
-   public sendNoti(noti: string, data: any): void {
+   public sendNoti(noti: string, data?: any): void {
       NotificationManager.getInstance().__sendNotification__(noti, data);
    }
 

@@ -76,12 +76,14 @@ export class ViewManager {
             ccs.addChild(canvasNode);
             // 这里延迟1ms是为了让场景在下一帧加载
             setTimeout(() => {
+                this.__closeAllView__();
                 cc.director.runSceneImmediate(ccs);
                 sceneMediator.viewDidAppear();
                 cb && cb();
             }, 1);
         } else {
             cc.director.loadScene(scenePath, ()=>{
+                this.__closeAllView__();
                 let canvas = cc.director.getScene().getChildByName('Canvas');
                 if (canvas) {
                     sceneMediator.view = canvas.addComponent(view);
@@ -182,11 +184,31 @@ export class ViewManager {
      * 关闭所有弹出窗口
      * @private
      */
-    public __closeAllPopView__():void {
+    public __closeAllPopView__(): void {
         for (let i = 0; i < this._popViewList.length; i++) {
             this._popViewList[i].view["__onClose__"]();
         }
         this._popViewList = [];
+    }
+
+    /**
+     * 关闭所有添加层级
+     * @private
+     */
+    public __closeAllAddLayer__(): void {
+        for (let i = 0; i < this._layerViewList.length; i++) {
+            this._layerViewList[i].view["__onClose__"]();
+        }
+        this._layerViewList = [];
+    }
+
+    /**
+     * 关闭所有view
+     * @private
+     */
+    public __closeAllView__(): void {
+        this.__closeAllPopView__();
+        this.__closeAllAddLayer__();
     }
 
     /**

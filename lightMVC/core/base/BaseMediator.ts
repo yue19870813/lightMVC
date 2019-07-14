@@ -75,7 +75,7 @@ export default abstract class BaseMediator {
      * @param {{new (): BaseCommand}} cmd 命令类
      * @param {Object} data 命令参数
      */
-    public sendCmd<T extends BaseCommand>(cmd: {new (): T}, data: any): void {
+    public sendCmd<T extends BaseCommand>(cmd: {new (): T}, data?: any): void {
         CommandManager.getInstance().__executeCommand__(cmd, data);
     }
 

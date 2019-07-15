@@ -1,7 +1,7 @@
 # lightMVC
 light mvc
 ---
-简易轻量级MVC框架，适用于中小型项目使用。后续会拓展lightMVC_ex内容来适应大型项目的开发。
+简易轻量级MVC框架，适用于中小型项目使用。后续会拓展lightMVC_ex内容来适应大型项目的开发。这套轻量级MVC框架可以帮助开发者组织代码，以及业务结构，让项目更好维护和拓展，提高开发效率。
 
 #### 架构图
 ![架构图](./mvc.png)
@@ -128,3 +128,77 @@ public getModel<T extends BaseModel>(model: {new (): T}): T;
 public destroy(): void;
 ```
 
+#### 使用方式
+1. 初始化框架：
+```javascript
+// 调试模式为false、设计分辨率为1080*2048、宽适配。
+Facade.getInstance().init(false, cc.size(1080, 2048), false, true);
+```
+2. 注册model数据对象：
+```javascript
+// 如果需要数据层，那么应该首先将所有需要的model在开始就都注册上。
+Facade.getInstance().registerModel(PlayerModel);
+```
+3. 运行第一个场景：
+```javascript
+// 运行第一个场景时调用Facade的runScene接口，传入要运行的Mediator和Scene，还可选传入参数。
+Facade.getInstance().runScene(DefaultSceneMediator, DefaultScene, "测试参数999");
+```
+4. 原则上说，除了上述三步需要引用Facade外，后面场景运行起来后就不需要再调用Facade了，在MVC的不同层级做对应的逻辑处理，父类接口都做了支持。
+5. 场景运行后，可以在场景Mediator中创建层级view，或者pop出view。Layer view与pop view的区别就是，他们是两个管理器在进行管理，我们认为Layer是场景内初始化创建并且不会关闭的view界面，而pop view是可以随时打开或者关闭的view界面，当然具体怎么使用可以灵活处理。例如在DefaultSceneMediator中：
+```javascript
+/**
+ * 创建一个常驻的view界面FirstView 
+ * this.addLayer是BaseMediator中提供的基础功能接口（更多接口可以查看源码）。
+ * 层级为1，并且传入参数：this._data
+ * */
+this.addLayer(FirstMediator, FirstView, 1, this._data);
+```
+6. View层的UI节点操作接口。在View里有个成员属性ui，该界面的UI节点会在初始化时自动初始化到这个成员属性上，在操作UI节点时可以通过这个属性进行操作，该属性类型是UIContainer，常用接口是getNode和getComponent，示例代码如下：
+```javascript
+// 获取node节点
+let closeBtnNode = this.ui.getNode("close_btn");
+closeBtnNode.on(cc.Node.EventType.TOUCH_END, this.closeAllView, this);
+// 获取Component组件
+let desLabel = this.ui.getComponent("des_label", cc.Label);
+desLabel.string = "test";
+```
+7. View层与Mediator层的事件交互。Mediator直接持有View的引用，所以可以直接调用View中的接口，而View与Mediator就需要通过事件（Event）来进行交互了。首先需要在Mediator中注册监听：
+```javascript
+this.bindEvent(FirstView.OPEN_B, (str: string)=>{
+    // todo something...
+}, this);
+```
+然后在View中通过sendEvent接口发送事件来通知Mediator：
+```javascript
+// 第一个参数是事件名称，第二个参数是传递的参数。
+this.sendEvent(FirstView.OPEN_B, "BBB");
+```
+8. Mediator操作Model数据。在Mediator中可以通过getModel接口获取到指定的Model对象，通过直接引用来读取Model中的数据。而在修改数据的时候有两种方式，一种是通过Model的引用直接进行修改，这种情况大多是比较简单直接修改某个数值等；另一种比较复杂，比如要获取多个Model的数据进行复杂的逻辑操作并且修改多个值的情况，这种就适合将逻辑封装到一个命令（Command）中，通过发送命令来处理数据，这样可以减少Mediator中逻辑复杂度和耦合度。例子如下：
+```javascript
+// 直接通过引用进行修改的情况
+let playerModel = this.getModel(PlayerModel);
+this.view.setLevelDisplay(playerModel.getPlayerLv());
+
+// 通过命令进行操作的情况
+this.sendCmd(UpdateExpCommand, exp);
+```
+9. Model数据修改通知View刷新逻辑。大多数情况下，Model用来处理纯数据逻辑和与服务器交互的数据接口，当数据有变化时我们希望通知View刷新显示，这是我们只能通过抛出消息通知来告诉Mediator，然后通过Mediator来修改View显示，首先需要在Mediator中注册消息通知：
+```javascript
+this.registerNoti(Notification.UPDATE_EXP_FINISH, ()=>{
+    // todo something ...
+}, this);
+```
+然后我们在Model中通过发送这个消息通知来告诉Mediator：
+```javascript
+// 该接口第二个参数可以传递参数
+this.sendNoti(Notification.UPDATE_EXP_FINISH);
+```
+10. Mediator与Mediator之间的交互很简单，就是使用上面介绍Model向Mediator发送通知的方式。
+
+#### 其他
+简单的交互规则和接口调用介绍就这么多，还有就是代码结构的组织也很重要，这个就是看每个人或者项目的合理安排了，毕竟也是仁者见仁，智者见智的事情。
+
+lightMVC目前仅适合中小型项目使用，过于复杂的大型项目可能应付起来就会有些吃力，不过后续会继续维护并拓展到lightMVC_ex中来支持大型项目开发，lightMVC会始终保持简单轻量。  
+
+最后框架中有什么问题或者需要改进的问题欢迎反馈。

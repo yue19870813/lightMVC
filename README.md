@@ -2,7 +2,7 @@
 framework for cocos creator 
 ---
 update 2019.7.21
-1. readme
+1. readme 
 ---
 简易轻量级MVC框架，适用于中小型项目使用。后续会拓展[lightMVC_ex](./lightMVC_ex/README.md)内容来适应大型项目的开发。这套轻量级MVC框架可以帮助开发者组织代码，以及业务结构，让项目更好维护和拓展，提高开发效率。examples目录下有完整的例子Demo。
 

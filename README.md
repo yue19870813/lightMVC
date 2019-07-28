@@ -14,6 +14,8 @@ framework for cocos creator
 ##### Bug fix
 1. todo
 
+详细内容请参考[lightMVC_ex v2.0新增功能](./lightMVC_ex/README.md)
+
 ---
 #### 架构图
 ![架构图](./mvc.png)

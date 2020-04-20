@@ -1,3 +1,4 @@
+https://github.com/yue19870813/ituuz-x
 # lightMVC
 后续lightMVC会集成到这个项目下，请关注这个项目[https://github.com/yue19870813/ituuz-x](https://github.com/yue19870813/ituuz-x)  
 ---
